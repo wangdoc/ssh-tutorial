@@ -20,4 +20,7 @@ jobs:
       - name: Build
         run: npm run build
       - name: Deploy to website
-        run: npm run commit -- --repo https://${{ secrets.WANGDOC_BOT_TOKEN }}@github.com/wangdoc/website.git
+        run: |
+          git config user.name wangdoc-bot
+          git config user.email yifeng.ruan@gmail.com
+          npm run commit -- --repo https://${{ secrets.WANGDOC_BOT_TOKEN }}@github.com/wangdoc/website.git
