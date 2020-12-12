@@ -26,10 +26,9 @@ jobs:
           GIT_CONFIG_EMAIL: yifeng.ruan@gmail.com
           REPOSITORY_NAME: wangdoc/website
           ACCESS_TOKEN: ${{ secrets.WANGDOC_BOT_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: master # The branch the action should deploy to.
           FOLDER: dist # The folder the action should deploy.
           TARGET_FOLDER: dist/ssh
           CLEAN: true # Automatically remove deleted files from the deploy branch
-          COMMIT_MESSAGE: commit by GitHub Actions
+          COMMIT_MESSAGE: "commit by GitHub Actions"
 
