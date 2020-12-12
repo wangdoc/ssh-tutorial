@@ -11,6 +11,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+        with:
+          persist-credentials: false
       - name: Setup Node.js
         uses: actions/setup-node@main
         with:
@@ -32,5 +34,4 @@ jobs:
           TARGET_FOLDER: dist/ssh
           CLEAN: true # Automatically remove deleted files from the deploy branch
           COMMIT_MESSAGE: update
-          persist-credentials: false
 
