@@ -1,0 +1,23 @@
+name: SSH tutorial CI
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  page-generator:
+    name: Generating pages
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@main
+        with:
+          node-version: '14'
+      - name: Install dependencies
+        run: npm install
+      - name: Build
+        run: npm run build
+      - name: Deploy to website
+        run: npm run commit
