@@ -20,4 +20,4 @@ jobs:
       - name: Build
         run: npm run build
       - name: Deploy to website
-        run: npm run commit -- --repo https://${{ secrets.WANGDOC_BOT_TOKEN }}@git@github.com:wangdoc/website.git
+        run: npm run commit -- --repo https://${{ secrets.WANGDOC_BOT_TOKEN }}@github.com:wangdoc/website.git
