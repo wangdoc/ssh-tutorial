@@ -9,7 +9,7 @@
   "scripts": {
     "build": "loppo --site \"SSH 教程\" --id ssh --theme wangdoc",
     "build-and-commit": "npm run build && npm run commit",
-    "commit": "gh-pages --dist dist --dest dist/ssh --branch master --repo git@github.com:wangdoc/website.git",
+    "commit": "gh-pages --dist dist --dest dist/ssh --branch master",
     "chapter": "loppo chapter",
     "server": "loppo server"
   },
