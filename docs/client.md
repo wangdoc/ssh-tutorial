@@ -413,12 +413,14 @@ $ ssh -v -v -v server.example.com
 
 **-V**
 
-`-V`参数输出 SSH 客户端的版本。
+`-V`参数输出 ssh 客户端的版本。
 
 ```bash
 $ ssh –V
-OpenSSH_7.9p1 Debian-10+deb10u2, OpenSSL 1.1.1d  10 Sep 2019
+ssh: SSH Secure Shell 3.2.3 (non-commercial version) on i686-pc-linux-gnu
 ```
+
+上面命令输出本机 ssh 客户端版本是`SSH Secure Shell 3.2.3`。
 
 **-X**
 
