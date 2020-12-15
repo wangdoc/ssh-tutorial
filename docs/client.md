@@ -251,7 +251,7 @@ $ ssh -C server.example.com
 
 **-d**
 
-`-d`参数设置打印的 debug 信息级别，数值最高，输出的内容越详细。
+`-d`参数设置打印的 debug 信息级别，数值越高，输出的内容越详细。
 
 ```bash
 $ ssh –d 1 foo.com
