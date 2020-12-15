@@ -291,7 +291,7 @@ $ ssh --help
 
 **-i**
 
-`-i`参数用于指定私钥，意为“identity_file”，默认值为`~/.ssh/id_dsa`。注意，服务器必须存有对应的公钥，详见《密钥登录》一章。
+`-i`参数用于指定私钥，意为“identity_file”，默认值为`~/.ssh/id_dsa`。注意，对应的公钥必须存放到服务器，详见《密钥登录》一章。
 
 ```bash
 $ ssh -i my-key server.example.com
@@ -413,14 +413,12 @@ $ ssh -v -v -v server.example.com
 
 **-V**
 
-`-V`参数输出远程服务器的版本。
+`-V`参数输出 SSH 客户端的版本。
 
 ```bash
-$ ssh foo.com –V
-ssh: SSH Secure Shell 3.2.3 (non-commercial version) on i686-pc-linux-gnu
+$ ssh –V
+OpenSSH_7.9p1 Debian-10+deb10u2, OpenSSL 1.1.1d  10 Sep 2019
 ```
-
-上面命令输出`foo.com`的 SSH 服务器版本是`SSH Secure Shell 3.2.3`。
 
 **-X**
 
