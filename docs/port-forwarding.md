@@ -22,7 +22,7 @@ SSH 除了登录服务器，还有一大用途，就是作为加密通信的中�
 $ ssh -D local-port tunnel-host -N
 ```
 
-上面命令中，`-D`表示动态转发，`local-port`是本地端口，`tunnel-host`是 SSH 服务器，`-N`表示只进行端口转发，不登录远程 Shell。
+上面命令中，`-D`表示动态转发，`local-port`是本地端口，`tunnel-host`是 SSH 服务器，`-N`表示这个 SSH 连接只进行端口转发，不登录远程 Shell，不能执行远程命令，只能充当隧道。
 
 举例来说，如果本地端口是`2121`，那么动态转发的命令就是下面这样。
 
@@ -30,9 +30,9 @@ $ ssh -D local-port tunnel-host -N
 $ ssh -D 2121 tunnel-host -N
 ```
 
-注意，这种转发采用了 SOCKS5 协议。访问外部网站时，需要把 HTTP 请求转成 SOCKS5 协议，才能把本地端口的请求转发出去。`-N`参数表示，这个 SSH 连接不能执行远程命令，只能充当隧道。
+注意，这种转发采用了 SOCKS5 协议。访问外部网站时，需要把 HTTP 请求转成 SOCKS5 协议，才能把本地端口的请求转发出去。
 
-下面是 ssh 隧道建立后的一个使用实例。
+下面是 SSH 隧道建立后的一个使用实例。
 
 ```bash
 $ curl -x socks5://localhost:2121 http://www.example.com
@@ -40,7 +40,7 @@ $ curl -x socks5://localhost:2121 http://www.example.com
 
 上面命令中，curl 的`-x`参数指定代理服务器，即通过 SOCKS5 协议的本地`2121`端口，访问`http://www.example.com`。
 
-如果经常使用动态转发，可以将设置写入 SSH 客户端的用户个人配置文件。
+如果经常使用动态转发，可以将设置写入 SSH 客户端的用户个人配置文件（`~/.ssh/config`）。
 
 ```bash
 DynamicForward tunnel-host:local-port
@@ -92,7 +92,7 @@ $ ssh -L 1100:mail.example.com:110 other.example.com
 
 这个命令最好加上`-N`参数，表示不在 SSH 跳板机执行远程命令，让 SSH 只充当隧道。另外还有一个`-f`参数表示 SSH 连接在后台运行。
 
-如果经常使用本地转发，可以将设置写入 SSH 客户端的用户个人配置文件。
+如果经常使用本地转发，可以将设置写入 SSH 客户端的用户个人配置文件（`~/.ssh/config`）。
 
 ```bash
 Host test.example.com
@@ -129,7 +129,7 @@ $ curl http://localhost:2121
 
 执行上面的命令以后，命令就会输出服务器`www.example.com`的80端口返回的内容。
 
-如果经常执行远程端口转发，可以将设置写入 SSH 客户端的用户个人配置文件。
+如果经常执行远程端口转发，可以将设置写入 SSH 客户端的用户个人配置文件（`~/.ssh/config`）。
 
 ```bash
 Host test.example.com
@@ -142,27 +142,27 @@ RemoteForward local-IP:local-port target-ip:target-port
 
 ### 简易 VPN
 
-VPN 用来在外网与内网之间建立一条加密通道。内网的服务器不能从外网直接访问，必须通过一个跳板机，如果本机可以访问跳板机，就可以使用 ssh 本地转发，简单实现一个 VPN。
+VPN 用来在外网与内网之间建立一条加密通道。内网的服务器不能从外网直接访问，必须通过一个跳板机，如果本机可以访问跳板机，就可以使用 SSH 本地转发，简单实现一个 VPN。
 
 ```bash
 $ ssh -L 2080:corp-server:80 -L 2443:corp-server:443 tunnel-host -N
 ```
 
-上面命令通过 ssh 跳板机，将本机的`2080`端口绑定内网服务器的`80`端口，本机的`2443`端口绑定内网服务器的`443`端口。
+上面命令通过 SSH 跳板机，将本机的`2080`端口绑定内网服务器的`80`端口，本机的`2443`端口绑定内网服务器的`443`端口。
 
 ### 两级跳板
 
-端口转发可以有多级，比如新建两个 ssh 隧道，第一个隧道转发给第二个隧道，第二个隧道才能访问目标服务器。
+端口转发可以有多级，比如新建两个 SSH 隧道，第一个隧道转发给第二个隧道，第二个隧道才能访问目标服务器。
 
-首先，新建第一级隧道。
+首先，在本机新建第一级隧道。
 
 ```bash
 $ ssh -L 7999:localhost:2999 tunnel1-host
 ```
 
-上面命令在本地`7999`端口与`tunnel1-host`之间建立一条隧道，隧道的出口是`tunnel1-host`的`localhost:2999`，也就是`tunnel1-host`收到本机的请求以后，转发给本机的`2999`端口。
+上面命令在本地`7999`端口与`tunnel1-host`之间建立一条隧道，隧道的出口是`tunnel1-host`的`localhost:2999`，也就是`tunnel1-host`收到本机的请求以后，转发给自己的`2999`端口。
 
-然后，在第一台跳板机执行下面的命令，新建第二级隧道。
+然后，在第一台跳板机（`tunnel1-host`）执行下面的命令，新建第二级隧道。
 
 ```bash
 $ ssh -L 2999:target-host:7999 tunnel2-host -N
@@ -170,7 +170,7 @@ $ ssh -L 2999:target-host:7999 tunnel2-host -N
 
 上面命令将第一台跳板机`tunnel1-host`的`2999`端口，通过第二台跳板机`tunnel2-host`，连接到目标服务器`target-host`的`7999`端口。
 
-最终效果就是，访问本机的`2999`端口，就会转发到`target-host`的`2999`端口。
+最终效果就是，访问本机的`7999`端口，就会转发到`target-host`的`7999`端口。
 
 ## 参考链接
 
