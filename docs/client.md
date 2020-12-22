@@ -281,14 +281,6 @@ $ ssh -F /usr/local/ssh/other_config
 
 上面命令指定使用配置文件`other_config`。
 
-**-h，--help**
-
-`-h`、`--help`参数显示帮助信息。
-
-```bash
-$ ssh --help
-```
-
 **-i**
 
 `-i`参数用于指定私钥，意为“identity_file”，默认值为`~/.ssh/id_dsa`。注意，对应的公钥必须存放到服务器，详见《密钥登录》一章。
