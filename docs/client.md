@@ -14,10 +14,10 @@ $ sudo apt install openssh-client
 $ sudo dnf install openssh-clients
 ```
 
-安装以后，可以使用`-h`参数，查看一下是否安装成功。
+安装以后，可以使用`-V`参数输出版本号，查看一下是否安装成功。
 
 ```bash
-$ ssh -h
+$ ssh -V
 ```
 
 ## 基本用法
