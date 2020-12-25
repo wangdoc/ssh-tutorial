@@ -174,5 +174,5 @@ $ ssh -L 2999:target-host:7999 tunnel2-host -N
 
 ## 参考链接
 
-- [An Illustrated Guide to SSH Tunnels](https://solitum.net/an-illustrated-guide-to-ssh-tunnels/), Scott Wiersdorf
+- [An Illustrated Guide to SSH Tunnels](https://solitum.net/posts/an-illustrated-guide-to-ssh-tunnels/), Scott Wiersdorf
 
