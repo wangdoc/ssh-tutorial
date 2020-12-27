@@ -20,7 +20,7 @@ $ sudo yum install openssh-server
 $ sshd
 ```
 
-这条命令执行之后可能会输出这条信息：*sshd re-exec requires execution with an absolute path*，需要使用绝对路径来启动：
+如果执行之后输出这条信息：*sshd re-exec requires execution with an absolute path*，需要使用绝对路径来启动：
 
 ```bash
 # Centos、Ubuntu、OS X
