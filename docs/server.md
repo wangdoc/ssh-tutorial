@@ -20,6 +20,13 @@ $ sudo yum install openssh-server
 $ sshd
 ```
 
+如果执行之后输出这条信息：*sshd re-exec requires execution with an absolute path*，需要使用绝对路径来启动：
+
+```bash
+# Centos、Ubuntu、OS X
+$ /usr/sbin/sshd
+```
+
 上面的命令运行以后，sshd 自动进入后台，所以命令后面不需要加上`&`。
 
 除了直接运行可执行文件，也可以通过 Systemd 启动 sshd。
