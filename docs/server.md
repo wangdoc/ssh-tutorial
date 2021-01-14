@@ -282,7 +282,7 @@ Port 8080
 
 **PrintMotd**
 
-`PrintMotd`指定用户登录后，是否向其展示系统的 motd（Message of the the day）的信息文件`/etc/motd`。该文件用于通知所有用户一些重要事项，比如系统维护时间、安全问题等等。默认值为`yes`（`PrintMotd yes`），由于 Shell 一般会展示这个信息文件，所以这里可以改为`no`。
+`PrintMotd`指定用户登录后，是否向其展示系统的 motd（Message of the day）的信息文件`/etc/motd`。该文件用于通知所有用户一些重要事项，比如系统维护时间、安全问题等等。默认值为`yes`（`PrintMotd yes`），由于 Shell 一般会展示这个信息文件，所以这里可以改为`no`。
 
 **PrintLastLog**
 
