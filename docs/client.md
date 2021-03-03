@@ -249,14 +249,6 @@ $ ssh -c blowfish -c 3des server.example.com
 $ ssh -C server.example.com
 ```
 
-**-d**
-
-`-d`参数设置打印的 debug 信息级别，数值越高，输出的内容越详细。
-
-```bash
-$ ssh –d 1 foo.com
-```
-
 **-D**
 
 `-D`参数指定本机的 Socks 监听端口，该端口收到的请求，都将转发到远程的 SSH 主机，又称动态端口转发，详见《端口转发》一章。
