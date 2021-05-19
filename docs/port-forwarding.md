@@ -101,39 +101,61 @@ LocalForward client-IP:client-port server-IP:server-port
 
 ## 远程转发
 
-远程端口指的是在远程 SSH 服务器建立的转发规则。
+远程转发指的是在远程 SSH 服务器建立的转发规则。
 
-这种场景比较特殊，主要针对内网的情况。本地计算机在外网，SSH 跳板机和目标服务器都在内网，而且本地计算机无法访问内网之中的 SSH 跳板机，但是 SSH 跳板机可以访问本机计算机。
-
-由于本机无法访问内网 SSH 跳板机，就无法从外网发起 SSH 隧道，建立端口转发。必须反过来，从 SSH 跳板机发起隧道，建立端口转发，这时就形成了远程端口转发。
+它跟本地转发正好反过来。建立本地计算机到远程计算机的 SSH 隧道以后，本地转发是通过本地计算机访问远程计算机，而远程转发则是通过远程计算机访问本地计算机。它的命令格式如下。
 
 ```bash
-$ ssh -R local-port:target-host:target-port -N local
+$ ssh -R remote-port:target-host:target-port -N remotehost
 ```
 
-上面的命令，首先需要注意，不是在本机执行的，而是在 SSH 跳板机执行的，从跳板机去连接本地计算机。`-R`参数表示远程端口转发，`local-port`是本地计算机的端口，`target-host`和`target-port`是目标服务器及其端口，`local`是本地计算机。
+上面命令中，`-R`参数表示远程端口转发，`remote-port`是远程计算机的端口，`target-host`和`target-port`是目标服务器及其端口，`remotehost`是远程计算机。
 
-显然，远程端口转发要求本地计算机也安装了 SSH 服务器，这样才能接受 SSH 跳板机的远程登录。
+远程转发主要针对内网的情况。下面举两个例子。
 
-比如，跳板机执行下面的命令，绑定本地计算机的`2121`端口，去访问`www.example.com:80`。
+第一个例子是内网某台服务器`localhost`在 80 端口开了一个服务，可以通过远程转发将这个 80 端口，映射到具有公网 IP 地址的`my.public.server`服务器的 8080 端口，使得访问`my.public.server:8080`这个地址，就可以访问到那台内网服务器的 80 端口。
 
 ```bash
-$ ssh -R 2121:www.example.com:80 local -N
+$ ssh -R 8080:localhost:80 -N my.public.server
 ```
 
-执行上面的命令以后，跳板机到本地计算机的隧道已经建立了。然后，就可以从本机访问目标服务器了，即在本机执行下面的命令。
+上面命令是在内网`localhost`服务器上执行，建立从`localhost`到`my.public.server`的 SSH 隧道。运行以后，用户访问`my.public.server:8080`，就会自动映射到`localhost:80`。
+
+第二个例子是本地计算机`local`在外网，SSH 跳板机和目标服务器`my.private.server`都在内网，必须通过 SSH 跳板机才能访问目标服务器。但是，本地计算机`local`无法访问内网之中的 SSH 跳板机，而 SSH 跳板机可以访问本机计算机。
+
+由于本机无法访问内网 SSH 跳板机，就无法从外网发起 SSH 隧道，建立端口转发。必须反过来，从 SSH 跳板机发起隧道，建立端口转发，这时就形成了远程端口转发。跳板机执行下面的命令，绑定本地计算机`local`的`2121`端口，去访问`my.private.server:80`。
+
+```bash
+$ ssh -R 2121:my.private.server:80 -N local
+```
+
+上面命令是在 SSH 跳板机上执行的，建立跳板机到`local`的隧道，并且这条隧道的出口映射到`my.private.server:80`。
+
+显然，远程转发要求本地计算机`local`也安装了 SSH 服务器，这样才能接受 SSH 跳板机的远程登录。
+
+执行上面的命令以后，跳板机到`local`的隧道已经建立了。然后，就可以从本地计算机访问目标服务器了，即在本机执行下面的命令。
 
 ```bash
 $ curl http://localhost:2121
 ```
 
-执行上面的命令以后，命令就会输出服务器`www.example.com`的80端口返回的内容。
+本机执行上面的命令以后，就会输出服务器`my.private.server`的 80 端口返回的内容。
 
 如果经常执行远程端口转发，可以将设置写入 SSH 客户端的用户个人配置文件（`~/.ssh/config`）。
 
 ```bash
-Host test.example.com
-RemoteForward local-IP:local-port target-ip:target-port
+Host remote-forward
+  HostName test.example.com
+  RemoteForward remote-port target-host:target-port
+```
+
+完成上面的设置后，执行下面的命令就会建立远程转发。
+
+```bash
+$ ssh -N remote-forward
+
+# 等同于
+$ ssh -R remote-port:target-host:target-port -N test.example.com
 ```
 
 ## 实例
