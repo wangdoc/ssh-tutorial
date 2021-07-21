@@ -275,7 +275,7 @@ $ ssh -F /usr/local/ssh/other_config
 
 **-i**
 
-`-i`参数用于指定私钥，意为“identity_file”，默认值为`~/.ssh/id_dsa`。注意，对应的公钥必须存放到服务器，详见《密钥登录》一章。
+`-i`参数用于指定私钥，意为“identity_file”，默认值为`~/.ssh/id_dsa`（DSA 算法）和`~/.ssh/id_rsa`（RSA 算法）。注意，对应的公钥必须存放到服务器，详见《密钥登录》一章。
 
 ```bash
 $ ssh -i my-key server.example.com
