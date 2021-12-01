@@ -510,6 +510,9 @@ Compression = yes
 - `Compression yes`：是否压缩传输信号。
 - `ConnectionAttempts 10`：客户端进行连接时，最大的尝试次数。
 - `ConnectTimeout 60`：客户端进行连接时，服务器在指定秒数内没有回复，则中断连接尝试。
+- `ControlMaster auto`：客户端复用之前的ssh连接
+- `ControlPath ~/.ssh/master-%r@%h:%p`：客户端复用之前的ssh连接, 连接存放位置(%r %h等的含义参考 `man 5 sshd_config` 后搜索 "TOKEN")
+- `ControlPersist 86400`：客户端复用之前的ssh连接, 连接的存活时间
 - `DynamicForward 1080`：指定动态转发端口。
 - `GlobalKnownHostsFile /users/smith/.ssh/my_global_hosts_file`：指定全局的公钥数据库文件的位置。
 - `Host server.example.com`：指定连接的域名或 IP 地址，也可以是别名，支持通配符。`Host`命令后面的所有配置，都是针对该主机的，直到下一个`Host`命令为止。
