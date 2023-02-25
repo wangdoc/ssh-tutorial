@@ -2,7 +2,7 @@
 
 ## 简介
 
-OpenSSH 的客户端是二进制程序 ssh。它在 Linux/Unix 系统的位置是`/usr/local/bin/ssh`，Windows 系统的位置是`\Program Files\OpenSSH\bin\ssh.exe`。
+OpenSSH 的客户端是二进制程序 ssh。它在 Linux/Unix 系统的位置是`/usr/local/bin/ssh`。
 
 Linux 系统一般都自带 ssh，如果没有就需要安装。
 
