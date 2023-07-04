@@ -292,9 +292,9 @@ Port 8080
 
 `Protocol`指定 sshd 使用的协议。`Protocol 1`表示使用 SSH 1 协议，建议改成`Protocol 2`（使用 SSH 2 协议）。`Protocol 2,1`表示同时支持两个版本的协议。
 
-**PubKeyAuthentication**
+**PubkeyAuthentication**
 
-`PubKeyAuthentication`指定是否允许公钥登录，默认值为`yes`（`PubKeyAuthentication yes`）。
+`PubkeyAuthentication`指定是否允许公钥登录，默认值为`yes`（`PubkeyAuthentication yes`）。
 
 **QuietMode**
 
