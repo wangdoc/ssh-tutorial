@@ -180,11 +180,11 @@ HostKey /usr/local/ssh/my_old_ssh1_key
 
 **ClientAliveCountMax**
 
-`ClientAliveCountMax`指定建立连接后，客户端失去响应时，服务器尝试连接的次数（`ClientAliveCountMax 8`）。
+`ClientAliveCountMax`指定建立连接后，客户端失去响应时（超过指定时间，没有收到任何消息），服务器尝试连接（发送消息）的次数（`ClientAliveCountMax 8`）。
 
 **ClientAliveInterval**
 
-`ClientAliveInterval`指定允许客户端发呆的时间，单位为秒（`ClientAliveInterval 180`）。如果这段时间里面，客户端没有发送任何信号，SSH 连接将关闭。
+`ClientAliveInterval`指定允许客户端发呆的时间，单位为秒（`ClientAliveInterval 180`）。超过这个时间，服务器将发送消息以请求客户端的响应。如果为`0`，表示不向客户端发送消息，即连接不会自动断开。
 
 **Compression**
 
@@ -318,7 +318,7 @@ SSH 1 版本专用，指定日志只输出致命的错误信息（`QuietMode yes
 
 **TCPKeepAlive**
 
-`TCPKeepAlive`指定打开 sshd 跟客户端 TCP 连接的 keepalive 参数（`TCPKeepAlive yes`）。
+`TCPKeepAlive`指定系统是否应向客户端发送 TCP keepalive 消息（`TCPKeepAlive yes`）。
 
 **UseDNS**
 
