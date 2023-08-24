@@ -281,6 +281,16 @@ $ ssh -F /usr/local/ssh/other_config
 $ ssh -i my-key server.example.com
 ```
 
+**-J**
+
+`-J`指定跳转服务器。假定本地无法直接与 SSH 服务器通信，就可以通过`—J`指定跳转服务器。
+
+```bash
+$ ssh -J root@J1,root@J2 root@S1
+```
+
+上面示例中，本机先通过 J1，再通过 J2，登陆到 S1 服务器。
+
 **-l**
 
 `-l`参数指定远程登录的账户名。

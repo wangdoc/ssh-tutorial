@@ -48,17 +48,21 @@ DynamicForward tunnel-host:local-port
 
 ## 本地转发
 
-本地转发（local forwarding）指的是，SSH 服务器作为中介的跳板机，建立本地计算机与特定目标网站之间的加密连接。本地转发是在本地计算机的 SSH 客户端建立的转发规则。
+本地转发（local forwarding）指的是，创建一个本地端口，将发往该端口的所有通信都通过 SSH 服务器，转发到指定的远程服务器的端口。这种情况下，SSH 服务器只是一个作为跳板的中介，用于连接本地计算机无法直接连接的远程服务器。本地转发是在本地计算机建立的转发规则。
 
-它会指定一个本地端口（local-port），所有发向那个端口的请求，都会转发到 SSH 跳板机（tunnel-host），然后 SSH 跳板机作为中介，将收到的请求发到目标服务器（target-host）的目标端口（target-port）。
+它的语法如下，其中会指定本地端口（local-port）、SSH 服务器（tunnel-host）、远程服务器（target-host）和远程端口（target-port）。
 
 ```html
-$ ssh -L local-port:target-host:target-port tunnel-host
+$ ssh -L -N -f local-port:target-host:target-port tunnel-host
 ```
 
-上面命令中，`-L`参数表示本地转发，`local-port`是本地端口，`target-host`是你想要访问的目标服务器，`target-port`是目标服务器的端口，`tunnel-host`是 SSH 跳板机。
+上面命令中，有三个配置参数。
 
-举例来说，现在有一台 SSH 跳板机`tunnel-host`，我们想要通过这台机器，在本地`2121`端口与目标网站`www.example.com`的80端口之间建立 SSH 隧道，就可以写成下面这样。
+- `-L`：转发本地端口。
+- `-N`：不发送任何命令，只用来建立连接。没有这个参数，会在 SSH 服务器打开一个 Shell。
+- `-f`：将 SSH 连接放到后台。没有这个参数，暂时不用 SSH 连接时，终端会失去响应。
+
+举例来说，现在有一台 SSH 服务器`tunnel-host`，我们想要通过这台机器，在本地`2121`端口与目标网站`www.example.com`的80端口之间建立 SSH 隧道，就可以写成下面这样。
 
 ```bash
 $ ssh -L 2121:www.example.com:80 tunnel-host -N
@@ -78,7 +82,7 @@ $ curl http://localhost:2121
 $ ssh -L 1100:mail.example.com:110 mail.example.com
 ```
 
-上面命令将本机的1100端口，绑定邮件服务器`mail.example.com`的110端口（POP3 协议的默认端口）。端口转发建立以后，POP3 邮件客户端只需要访问本机的1100端口，请求就会通过 SSH 跳板机（这里是`mail.example.com`），自动转发到`mail.example.com`的110端口。
+上面命令将本机的1100端口，绑定邮件服务器`mail.example.com`的110端口（POP3 协议的默认端口）。端口转发建立以后，POP3 邮件客户端只需要访问本机的1100端口，请求就会通过 SSH 服务器（这里是`mail.example.com`），自动转发到`mail.example.com`的110端口。
 
 上面这种情况有一个前提条件，就是`mail.example.com`必须运行 SSH 服务器。否则，就必须通过另一台 SSH 服务器中介，执行的命令要改成下面这样。
 
@@ -103,13 +107,13 @@ LocalForward client-IP:client-port server-IP:server-port
 
 远程转发指的是在远程 SSH 服务器建立的转发规则。
 
-它跟本地转发正好反过来。建立本地计算机到远程计算机的 SSH 隧道以后，本地转发是通过本地计算机访问远程计算机，而远程转发则是通过远程计算机访问本地计算机。它的命令格式如下。
+它跟本地转发正好反过来。建立本地计算机到远程 SSH 服务器的隧道以后，本地转发是通过本地计算机访问远程 SSH 服务器，而远程转发则是通过远程 SSH 服务器访问本地计算机。它的命令格式如下。
 
 ```bash
 $ ssh -R remote-port:target-host:target-port -N remotehost
 ```
 
-上面命令中，`-R`参数表示远程端口转发，`remote-port`是远程计算机的端口，`target-host`和`target-port`是目标服务器及其端口，`remotehost`是远程计算机。
+上面命令中，`-R`参数表示远程端口转发，`remote-port`是远程 SSH 服务器的端口，`target-host`和`target-port`是目标服务器及其端口，`remotehost`是远程 SSH 服务器。
 
 远程转发主要针对内网的情况。下面举两个例子。
 
@@ -197,4 +201,5 @@ $ ssh -L 2999:target-host:7999 tunnel2-host -N
 ## 参考链接
 
 - [An Illustrated Guide to SSH Tunnels](https://solitum.net/posts/an-illustrated-guide-to-ssh-tunnels/), Scott Wiersdorf
+- [An Excruciatingly Detailed Guide To SSH](https://grahamhelton.com/blog/ssh-cheatsheet/), Graham Helton
 
