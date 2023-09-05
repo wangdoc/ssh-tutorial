@@ -473,29 +473,28 @@ SSH 客户端的全局配置文件是`/etc/ssh/ssh_config`，用户个人的配�
 用户个人的配置文件`~/.ssh/config`，可以按照不同服务器，列出各自的连接参数，从而不必每一次登录都输入重复的参数。下面是一个例子。
 
 ```bash
-Host *
-     Port 2222
-
 Host remoteserver
      HostName remote.example.com
      User neo
      Port 2112
+
+Host *
+     Port 2222
 ```
 
-上面代码中，`Host *`表示对所有主机生效，后面的`Port 2222`表示所有主机的默认连接端口都是2222，这样就不用在登录时特别指定端口了。这里的缩进并不是必需的，只是为了视觉上，易于识别针对不同主机的设置。
+上面代码中，`Host remoteserver`表示，下面的设置只对主机`remoteserver`生效。`remoteserver`只是一个别名，具体的主机由`HostName`命令指定，`User`和`Port`这两项分别表示用户名和端口。`HostName`、`User`、`Port`这三项前面的缩进并不是必需的，只是为了视觉上易于识别针对不同主机的设置。
 
-后面的`Host remoteserver`表示，下面的设置只对主机`remoteserver`生效。`remoteserver`只是一个别名，具体的主机由`HostName`命令指定，`User`和`Port`这两项分别表示用户名和端口。这里的`Port`会覆盖上面`Host *`部分的`Port`设置。
+后面的`Host *`表示对所有主机生效，`*`是一个通配符，比如`Host *.edu`表示只对一级域名为`.edu`的主机生效。这条命令下面的`Port 2222`表示所有主机的默认连接端口都是2222，这样就不用在登录时特别指定端口了。
+
+注意，当`Host *`与`Host remoteserver`下面有同一项设定时（比如两者都有`Port`设定），第一个出现的值生效。在本例中，连接`remoteserver`时，默认端口将是2112，而不是2222，如果`Host *`放在配置文件的顶部，那么默认端口将是2222。
 
 以后，登录`remote.example.com`时，只要执行`ssh remoteserver`命令，就会自动套用 config 文件里面指定的参数。
-单个主机的配置格式如下。
 
 ```bash
 $ ssh remoteserver
 # 等同于
 $ ssh -p 2112 neo@remote.example.com
 ```
-
-`Host`命令的值可以使用通配符，比如`Host *`表示对所有主机都有效的设置，`Host *.edu`表示只对一级域名为`.edu`的主机有效的设置。它们的设置都可以被单个主机的设置覆盖。
 
 ###  配置命令的语法
 
