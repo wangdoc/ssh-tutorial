@@ -2,6 +2,7 @@
 - client.md: SSH 客户端
 - key.md: SSH 密钥登录
 - server.md: SSH 服务器
+- log.md: 日志
 - port-forwarding.md: 端口转发
 - ca.md: SSH 证书登录
 - scp.md: scp 命令
