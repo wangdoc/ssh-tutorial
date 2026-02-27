@@ -17,18 +17,19 @@ Mar 25 20:39:12 web0 sshd[14885]: pam_unix(sshd:session): session closed for use
 ...
 ```
 
-上面示例中，返回的日志每一行就是一次登录尝试，按照从早到晚的顺序，其中包含了登录失败的尝试。`-u`参数是 Unit 单元的意思，`-u ssh`就是查看 SSH 单元，有的发行版需要写成`-u sshd`。
+上面示例中，返回的日志每一行就是一次登录尝试，按照从早到晚的顺序，其中包含了登录失败的尝试。`-u`参数是 Unit 单元的意思，`-u ssh`就是查看 SSH
+单元，有的发行版需要写成`-u sshd`。
 
 `-b0`参数可以查看自从上次登录后的日志。
 
 ```bash
-$ journalctl -t ssh -b0
+$ journalctl -u ssh -b0
 ```
 
 `-r`参数表示逆序输出，最新的在前面。
 
 ```bash
-$ journalctl -t ssh -b0 -r
+$ journalctl -u ssh -b0 -r
 ```
 
 `since`和`until`参数可以指定日志的时间范围。
@@ -83,6 +84,5 @@ LogLevel VERBOSE
 如果为了调试，可以将日志调整为 DEBUG。
 
 ```
- LogLevel DEBUG
+LogLevel DEBUG
 ```
-
